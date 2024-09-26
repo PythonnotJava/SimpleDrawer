@@ -1,0 +1,14 @@
+{
+  "title" : "饼状图名字",
+  "theme" : 0,
+  "default-color" : false,
+  "color" : ["red", "blue", "yellow", "tan", "darkcyan"],
+  "categories" : ["Python", "C", "Dart", "Golang", "C++"],
+  "hole" : 0,
+  "format" : 2,
+  "datas" : [43.6, 22.5, 16.23, 7.8, 33.9],
+  "legend-visible" : false,
+  "label-visible" : true,
+  "datas-visible" : true,
+  "use-percentage" : true
+}

@@ -1,0 +1,19 @@
+{
+  "title" : "柱状图名字",
+  "theme" : 2,
+  "type" : 0,
+  "value-visible" : true,
+  "default-color" : false,
+  "color" : ["tan", "blue", "skyblue"],
+  "categories" : ["A Type", "B Type", "C Type"],
+  "bw" : 0.5,
+  "datas" : [
+    [5, 6, 4, 2, 1],
+    [0, 2, 9, 6, 3],
+    [3.5, 2.6, 4, 5, 2]
+  ],
+  "rorate" : 0,
+  "labels" : ["January", "February", "March", "April", "May"],
+  "xlabel" : "标签1",
+  "ylabel" : "标签2"
+}
