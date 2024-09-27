@@ -1,3 +1,4 @@
+import json
 import sys
 import random
 from typing import *
@@ -13,15 +14,17 @@ from SideBar import SideBar
 from OptimizeQt import *
 from CanvasUI import *
 from WalkerWebview import PygwalkerOpt
-
+from MenuBar import MenuBar
+from DefaultCanvas import *
 
 WHATTHIS = "Find Simple tools in Drawer."
 
 class SimpleDrawer(QMainWindow, AbstractWidget):
+    GlobalSettings = json.load(open('config.json'))
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.homePage = OptLabel.textBuild(text="自带插件系统，可以轻松拓展功能界面！")
+        self.homePage = HomePageView()
         self.scaGallery = TabCanvas(defaultTabType=TabType(
             widget=OptLabel.textBuild(
                 minw=400,
@@ -75,6 +78,8 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
             pie_func=lambda: self.setStackIndex(4)
         )
 
+        self.menubar = MenuBar(p=self)
+
         self.__setUI()
 
     def __setUI(self) -> None:
@@ -105,13 +110,8 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
         self.pieGallery.linkOpenFunction(self.drawPie)
         self.register(self.mixinGallery, '混合图', qt_icon('mdi6.chart-multiple'))
 
-        apply_stylesheet(self, theme='light_blue.xml')
-
-        menubar = QMenuBar(self)
-        toggleThemeBtn = QAction("随即切换主题", menubar)
-        toggleThemeBtn.triggered.connect(lambda : apply_stylesheet(self, theme=list_themes()[random.randint(0, 19)]))
-        menubar.addAction(toggleThemeBtn)
-        self.setMenuBar(menubar)
+        apply_stylesheet(self, theme=self.GlobalSettings['defaultMainTheme'])
+        self.setMenuBar(self.menubar)
        
     def setStackIndex(self, index: int) -> None:
         stack: Stack = self.findChild(Stack, 'stack')
@@ -160,6 +160,11 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
         self.findChild(Stack, 'stack').addWidget(widget)
         self.sidebar.append(name, lambda : self.setStackWidget(widget), icon)
 
+    def closeEvent(self, e : QCloseEvent) -> None:
+        super().closeEvent(e)
+        if self.menubar.defaultMainTheme:
+            self.GlobalSettings['defaultMainTheme'] = self.menubar.defaultMainTheme
+        json.dump(self.GlobalSettings, open('config.json', 'w'))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

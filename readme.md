@@ -14,4 +14,5 @@ PyQtChart
 qt-material
 qtawesome
 matplotlib
+pygwalker
 ```
