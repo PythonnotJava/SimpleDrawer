@@ -15,4 +15,5 @@ qt-material
 qtawesome
 matplotlib
 pygwalker
+psutil
 ```

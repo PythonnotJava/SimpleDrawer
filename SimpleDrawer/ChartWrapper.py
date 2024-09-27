@@ -188,12 +188,12 @@ class PieWrapper:
         settings = json.load(open(path, 'r', encoding='utf-8'))
         isDatasVisible = settings.get('datas-visible', True)
         isUsePercentage = settings.get('use-percentage', True)
-        isLegendVisible = settings.get('legend-visible', False)
         ft = settings.get('format', 0)
+        names = settings['categories']
         series = PieSeries(
             labelsVisible=settings.get('label-visible', True),
             hole=settings.get('hole', 0),
-            names=settings['categories'],
+            names=names,
             datas=settings['datas'],
             isDefaultColor=settings.get('default-color', False),
             colors=settings['color']
@@ -213,7 +213,8 @@ class PieWrapper:
             theme=ChartThemeMap[settings.get('theme', 0)],
             mult=False,
             series=series,
-            isLegendVisible=isLegendVisible
+            isLegendVisible=True,
+            names=names
         )
 
     @property
@@ -225,8 +226,8 @@ class ChartContainerMixin(QChartView):
         self.wrapper = wrapper
         self.isPolar = wrapper.get('polar', False)  # 不管有没有这个属性
         self.chart = QChart() if not self.isPolar else QPolarChart()
-        self.__setBaseUI()
 
+        self.__setBaseUI()
     def __setBaseUI(self) -> None:
         if self.wrapper.get('mult'):
             series: List[QAbstractSeries] = self.wrapper.get('series')
@@ -341,7 +342,15 @@ class PieSeriesView(ChartContainerMixin):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.isPolar = False
-        self.chart.legend().setVisible(self.wrapper['isLegendVisible'])
+        lg : QLegend = self.chart.legend()
+        mks : List[QLegendMarker] = lg.markers(self.wrapper['series'])
+        for index, mk in enumerate(mks):
+            mk.setLabel(self.wrapper['names'][index])
 
 if __name__ == '__main__':
-    print(BarWrapper("../template/bar.template.json").data['title'])
+    # print(PieWrapper("../template/pie.template.json").data)
+    app = QApplication([])
+    ui = QMainWindow()
+    ui.setCentralWidget(PieSeriesView(wrapper=PieWrapper("../template/pie.template.json").data))
+    ui.show()
+    app.exec()

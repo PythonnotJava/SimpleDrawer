@@ -13,16 +13,6 @@ from qt_material import apply_stylesheet, list_themes
 from OptimizeQt import *
 
 
-class ShortCutDlg(QDialog):
-    def __init__(self):
-        super().__init__()
-
-        self.__setUI()
-    def __setUI(self) -> None:
-        self.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowCloseButtonHint)
-        self.setWindowTitle("设置快捷键")
-
-
 class ExitDlg(QDialog, AbstractWidget):
 
     whatToDo = pyqtSignal(int)

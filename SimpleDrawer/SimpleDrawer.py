@@ -18,6 +18,7 @@ from MenuBar import MenuBar
 from DefaultCanvas import *
 from StateVarious import StateVarious
 from AskDlg import *
+from ToolKit import *
 
 WHATTHIS = "Find Simple tools in Drawer."
 
@@ -83,7 +84,7 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
         self.menubar = MenuBar(p=self, s=self.GlobalSettings)
         self.statebar = StateVarious()
 
-        self.trayicon = QSystemTrayIcon(QIcon("logo.svg"), self)
+        self.trayicon = SystemTrayIcon(QIcon("logo.svg"), self)
 
         self.hidesc = QShortcut(QKeySequence(self.GlobalSettings['shortcuts']['mini']), self)
 
@@ -119,17 +120,7 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
         apply_stylesheet(self, theme=self.GlobalSettings['defaultMainTheme'])
         self.setMenuBar(self.menubar)
         self.setStatusBar(self.statebar)
-
-        # 托盘
-        show_action = QAction("Show", self)
-        quit_action = QAction("Exit", self)
-        show_action.triggered.connect(self.show)
-        quit_action.triggered.connect(QApplication.instance().quit)
-        tray_menu = QMenu()
-        tray_menu.addAction(show_action)
-        tray_menu.addAction(quit_action)
-        self.trayicon.setContextMenu(tray_menu)
-        self.trayicon.activated.connect(self.show)
+        self.trayicon.show()
 
         # 快捷键设置
         self.hidesc.activated.connect(lambda : self.showMinimized())
@@ -154,6 +145,7 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
         if fileName:
             try:
                 wrapper = PlotWrapper(fileName).data
+                print(wrapper)
                 Gallery.append(TabType(
                     widget=Widget(wrapper=wrapper),
                     title=wrapper.get('title')
@@ -180,10 +172,6 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
     def drawBar(self): self.absract_draw("打开柱状图模板", BarWrapper, BarSeriesView, self.barGallery)
     def drawPie(self): self.absract_draw("打开饼状图模板", PieWrapper, PieSeriesView, self.pieGallery)
 
-    def register(self, widget : QWidget, name : str, icon) -> None:
-        self.findChild(Stack, 'stack').addWidget(widget)
-        self.sidebar.append(name, lambda : self.setStackWidget(widget), icon)
-
     def closeEvent(self, e: QCloseEvent) -> None:
         if self.menubar.defaultMainTheme:
             self.GlobalSettings['defaultMainTheme'] = self.menubar.defaultMainTheme
@@ -191,25 +179,31 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
         if self.GlobalSettings['exit-ask']:
             exitDlg = ExitDlg(self.GlobalSettings)
             exitDlg.whatToDo.connect(lambda x: self.__isExitAsk(exitDlg, x))
-            exitDlg.exec_()
-            if exitDlg.result() == QDialog.Rejected:
+            result = exitDlg.exec_()
+
+            if result == QDialog.Rejected:  # 点击×号
                 e.ignore()
-                json.dump(self.GlobalSettings, open('config.json', 'w'), indent=4)
-                super().closeEvent(e)
                 return
-        else:
-            json.dump(self.GlobalSettings, open('config.json', 'w'), indent=4)
-            super().closeEvent(e)
+
+        json.dump(self.GlobalSettings, open('config.json', 'w'), indent=4)
+        super().closeEvent(e)
 
     def __isExitAsk(self, dlg: ExitDlg, signal: int) -> None:
-        if signal == 0:
-            self.trayicon.show()
+        if signal == 0:  # 最小化到托盘
             dlg.close()
             self.hide()
-        elif signal == 1:
+        elif signal == 1:  # 退出
             QApplication.instance().quit()
-        elif signal == 2:
+        elif signal == 2:  # 取消
             dlg.close()
+
+    # 核心外置接口函数
+    #############################################################################################
+    # 注册控件
+    def register(self, widget : QWidget, name : str, icon) -> None:
+        self.findChild(Stack, 'stack').addWidget(widget)
+        self.sidebar.append(name, lambda : self.setStackWidget(widget), icon)
+    #############################################################################################
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
