@@ -90,30 +90,3 @@ class PieSeries(QPieSeries):
         else:
             s.setPen(QPen(s.color(), 0))
             s.setExploded(False)
-
-# QChartView <- QGraphicsView <- QAbstractScrollArea <- QFrame
-class ChartContainer(QChartView, AbstractWidget):
-    def __init__(self,
-                 chart: Optional[QChart] = None,
-                 hints: Union[
-                     QPainter.RenderHints, QPainter.RenderHint
-                 ] = QPainter.Antialiasing,  # 设置渲染提示,以指定绘制图形项时的一些选项和优化
-                 rubberBand: Union[
-                     QChartView.RubberBands, QChartView.RubberBand
-                 ] = QChartView.NoRubberBand,  # 光标在图标示图控件上拖动选择框的类型
-                 rubberBandSelectionMode: Qt.ItemSelectionMode = Qt.ContainsItemShape,  # 选择模式
-                 viewportWidget: Optional[QWidget] = None,
-                 align: Union[Qt.AlignmentFlag, Qt.Alignment] = Qt.AlignCenter,
-                 **kwargs
-                 ):
-        super().__init__(**kwargs)
-
-        if chart:
-            self.setChart(chart)
-        if viewportWidget:
-            self.setViewport(viewportWidget)
-
-        self.setAlignment(align)
-        self.setRubberBand(rubberBand)
-        self.setRenderHints(hints)
-        self.setRubberBandSelectionMode(rubberBandSelectionMode)

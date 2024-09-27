@@ -16,6 +16,8 @@ from CanvasUI import *
 from WalkerWebview import PygwalkerOpt
 from MenuBar import MenuBar
 from DefaultCanvas import *
+from StateVarious import StateVarious
+from AskDlg import *
 
 WHATTHIS = "Find Simple tools in Drawer."
 
@@ -78,7 +80,12 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
             pie_func=lambda: self.setStackIndex(4)
         )
 
-        self.menubar = MenuBar(p=self)
+        self.menubar = MenuBar(p=self, s=self.GlobalSettings)
+        self.statebar = StateVarious()
+
+        self.trayicon = QSystemTrayIcon(QIcon("logo.svg"), self)
+
+        self.hidesc = QShortcut(QKeySequence(self.GlobalSettings['shortcuts']['mini']), self)
 
         self.__setUI()
 
@@ -109,9 +116,23 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
         self.barGallery.linkOpenFunction(self.drawBar)
         self.pieGallery.linkOpenFunction(self.drawPie)
         self.register(self.mixinGallery, '混合图', qt_icon('mdi6.chart-multiple'))
-
         apply_stylesheet(self, theme=self.GlobalSettings['defaultMainTheme'])
         self.setMenuBar(self.menubar)
+        self.setStatusBar(self.statebar)
+
+        # 托盘
+        show_action = QAction("Show", self)
+        quit_action = QAction("Exit", self)
+        show_action.triggered.connect(self.show)
+        quit_action.triggered.connect(QApplication.instance().quit)
+        tray_menu = QMenu()
+        tray_menu.addAction(show_action)
+        tray_menu.addAction(quit_action)
+        self.trayicon.setContextMenu(tray_menu)
+        self.trayicon.activated.connect(self.show)
+
+        # 快捷键设置
+        self.hidesc.activated.connect(lambda : self.showMinimized())
        
     def setStackIndex(self, index: int) -> None:
         stack: Stack = self.findChild(Stack, 'stack')
@@ -137,6 +158,7 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
                     widget=Widget(wrapper=wrapper),
                     title=wrapper.get('title')
                 ))
+                self.statebar.showMessage("绘图成功！", 2500)
             except Exception as e:
                 w = AbstractWidget()
                 w.setUniqueWidget(
@@ -147,9 +169,11 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
                     widget=w,
                     title=str(type(e))
                 ))
+                self.statebar.showMessage("绘图失败！", 2500)
             Gallery.setCurrentPath(fileName)
         else:
             Gallery.setCurrentPath("Lost FilePath!")
+            self.statebar.showMessage("取消选择！", 2500)
 
     def drawScatter(self): self.absract_draw("打开散点图模板", ScatterWrapper, ValueAxisSeriesView, self.scaGallery)
     def drawLineOrCurve(self): self.absract_draw("打开线型图模板", LineCurveWrapper, ValueAxisSeriesView, self.lineGallery)
@@ -160,20 +184,39 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
         self.findChild(Stack, 'stack').addWidget(widget)
         self.sidebar.append(name, lambda : self.setStackWidget(widget), icon)
 
-    def closeEvent(self, e : QCloseEvent) -> None:
-        super().closeEvent(e)
+    def closeEvent(self, e: QCloseEvent) -> None:
         if self.menubar.defaultMainTheme:
             self.GlobalSettings['defaultMainTheme'] = self.menubar.defaultMainTheme
-        json.dump(self.GlobalSettings, open('config.json', 'w'))
+
+        if self.GlobalSettings['exit-ask']:
+            exitDlg = ExitDlg(self.GlobalSettings)
+            exitDlg.whatToDo.connect(lambda x: self.__isExitAsk(exitDlg, x))
+            exitDlg.exec_()
+            if exitDlg.result() == QDialog.Rejected:
+                e.ignore()
+                json.dump(self.GlobalSettings, open('config.json', 'w'), indent=4)
+                super().closeEvent(e)
+                return
+        else:
+            json.dump(self.GlobalSettings, open('config.json', 'w'), indent=4)
+            super().closeEvent(e)
+
+    def __isExitAsk(self, dlg: ExitDlg, signal: int) -> None:
+        if signal == 0:
+            self.trayicon.show()
+            dlg.close()
+            self.hide()
+        elif signal == 1:
+            QApplication.instance().quit()
+        elif signal == 2:
+            dlg.close()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setApplicationDisplayName("SimpleDrawer")
     app.setWindowIcon(QIcon('logo.svg'))
     ui = SimpleDrawer()
-
     # 拓展案例
     ui.register(PygwalkerOpt(), "pygwalker可视化", qt_icon('mdi.lightning-bolt'))
-
     ui.show()
     sys.exit(app.exec_())

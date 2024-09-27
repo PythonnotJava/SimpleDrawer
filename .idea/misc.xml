@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="QtPro" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="QtPro" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="qt" project-jdk-type="Python SDK" />
 </project>

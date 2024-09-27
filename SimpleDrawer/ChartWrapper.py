@@ -219,9 +219,9 @@ class PieWrapper:
     @property
     def data(self) -> dict: return self.__data
 
-class ChartContainerMixin(ChartContainer):
-    def __init__(self, wrapper : dict, **kwargs):
-        super().__init__(**kwargs)
+class ChartContainerMixin(QChartView):
+    def __init__(self, wrapper : dict):
+        super().__init__()
         self.wrapper = wrapper
         self.isPolar = wrapper.get('polar', False)  # 不管有没有这个属性
         self.chart = QChart() if not self.isPolar else QPolarChart()
@@ -247,6 +247,48 @@ class ChartContainerMixin(ChartContainer):
         self.setRubberBand(RubberBandMap[globalSetting['rubberBand']])
         self.chart.setAnimationDuration(globalSetting['animationDuration'])
         self.chart.setAnimationOptions(AnimationOptionsMap[globalSetting['animationOptions']])
+
+    def contextMenuEvent(self, e) -> None:
+        menu = QMenu(self)
+        saveToAct = QAction("保存图片", menu)
+        saveToAct.triggered.connect(self.__saveToAct)
+        resetThemeAct = QAction('重置主题', menu)
+        resetThemeMenu = QMenu()
+        for index in range(8):
+            resetThemeMenu.addAction(self.__create_action(index, resetThemeMenu))
+        resetThemeAct.setMenu(resetThemeMenu)
+        ifHideGridAct = QAction("显示/隐藏网格线", menu)
+        ifHideGridAct.triggered.connect(self.__ifHideGridAct)
+        menu.addActions([saveToAct, resetThemeAct, ifHideGridAct])
+        menu.exec_(e.globalPos())
+
+    def __ifHideGridAct(self) -> None:
+        if self.isPolar:
+            self.chart : QPolarChart
+            xaxis : QAbstractAxis = self.chart.axes(QPolarChart.PolarOrientation.PolarOrientationRadial)[0]
+            yaxis : QAbstractAxis = self.chart.axes(QPolarChart.PolarOrientation.PolarOrientationAngular)[0]
+        else:
+            xaxis = self.chart.axes()[0]
+            yaxis = self.chart.axes()[1]
+        xaxis.setGridLineVisible(not xaxis.isGridLineVisible())
+        xaxis.setMinorGridLineVisible(not xaxis.isMinorGridLineVisible())
+        yaxis.setGridLineVisible(not yaxis.isGridLineVisible())
+        yaxis.setMinorGridLineVisible(not yaxis.isMinorGridLineVisible())
+
+    def __create_action(self, theme, resetThemeMenu):
+        action = QAction(str(theme), resetThemeMenu)
+        action.triggered.connect(lambda: self.chart.setTheme(theme))
+        return action
+
+    def __saveToAct(self) -> None:
+        fileName, _ = QFileDialog.getSaveFileName(
+            self,
+            "选择保存路径",
+            "C://",
+            "png(*.png);;jpg(*.jpg);;jpeg(*.jpeg)"
+        )
+        if fileName:
+            self.grab().save(fileName)
 
 # 数值轴类图，散点图、线性图都可以是
 class ValueAxisSeriesView(ChartContainerMixin):
