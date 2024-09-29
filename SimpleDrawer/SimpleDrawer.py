@@ -101,6 +101,7 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
         self.setMenuBar(self.menubar)
         self.setStatusBar(self.statebar)
         self.trayicon.show()
+        self.setAcceptDrops(True)
 
         # 快捷键设置
         self.hidesc.activated.connect(lambda : self.showMinimized())
@@ -176,6 +177,10 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
             QApplication.instance().quit()
         elif signal == 2:  # 取消
             dlg.close()
+
+    # 支持拖入画图
+    def dropEvent(self, e : QDropEvent) -> None:
+        ...
 
     # 核心外置接口函数
     #############################################################################################
