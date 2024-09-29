@@ -47,7 +47,7 @@ class OperatorBar(AbstractWidget):
 
 @dataclass
 class TabType:
-    widget : AbstractWidget
+    widget : QWidget
     title : str = 'Unkonw'
     icon : Optional[Union[QIcon, str]] = None
 

@@ -1,51 +1,32 @@
 import sys
+from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtCore import QSize, Qt
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
-from PyQt5.QtChart import QChart, QChartView, QPieSeries
-from PyQt5.QtGui import QPainter
-
-class PieChartExample(QMainWindow):
+class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        # 创建主窗口
-        self.setWindowTitle("饼状图示例")
-        self.setGeometry(100, 100, 600, 400)
+        self.label = QLabel("这是一个写满文字的主页！", self)
+        self.label.setAlignment(Qt.AlignCenter)
 
-        # 创建饼状图系列
-        series = QPieSeries()
-        series.append("类别A", 40)
-        series.append("类别B", 30)
-        series.append("类别C", 30)
-
-        # 设置切片标签显示为占比
-        for slice in series.slices():
-            slice.setLabelVisible(True)
-            slice.setLabel(f"{slice.percentage() * 100:.1f}%")  # 显示占比
-
-        # 创建图表并添加系列
-        chart = QChart()
-        chart.addSeries(series)
-        chart.setTitle("饼状图示例")
-
-        # 设置图例位置
-        chart.legend().setAlignment(Qt.AlignRight)
-
-        # 创建图表视图
-        chart_view = QChartView(chart)
-        chart_view.setRenderHint(QPainter.Antialiasing)
-
-        # 设置布局
         layout = QVBoxLayout()
-        layout.addWidget(chart_view)
+        layout.addWidget(self.label)
+        self.setLayout(layout)
 
-        container = QWidget()
-        container.setLayout(layout)
-        self.setCentralWidget(container)
+        # 初始窗口大小
+        self.resize(800, 600)
 
-if __name__ == "__main__":
+    def resizeEvent(self, event):
+        # 获取窗口的宽度和高度
+        width = self.width()
+        height = self.height()
+
+        # 计算字体大小
+        font_size = min(width, height) // 20  # 你可以调整这个比例
+        self.label.setStyleSheet(f"font-size: {font_size}px;")
+
+if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = PieChartExample()
+    window = MainWindow()
     window.show()
     sys.exit(app.exec_())

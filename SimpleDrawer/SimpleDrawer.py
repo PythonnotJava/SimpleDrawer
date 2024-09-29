@@ -29,39 +29,19 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
 
         self.homePage = HomePageView()
         self.scaGallery = TabCanvas(defaultTabType=TabType(
-            widget=OptLabel.textBuild(
-                minw=400,
-                minh=400,
-                qss='background-color:skyblue',
-                text="散点图！"
-            ),
+            widget=DefaultDrawPageView('doc/scatter.template.md'),
             title="导航",
         ))
         self.lineGallery = TabCanvas(defaultTabType=TabType(
-                widget=OptLabel.textBuild(
-                    minw=400,
-                    minh=400,
-                    qss='background-color:skyblue',
-                    text="线型图！"
-                ),
+                widget=DefaultDrawPageView('doc/line.template.md'),
                 title="导航",
         ))
         self.pieGallery = TabCanvas(defaultTabType=TabType(
-                widget=OptLabel.textBuild(
-                    minw=400,
-                    minh=400,
-                    qss='background-color:skyblue',
-                    text="饼状图！"
-                ),
+                widget=DefaultDrawPageView('doc/pie.template.md'),
                 title="导航",
         ))
         self.barGallery = TabCanvas(defaultTabType=TabType(
-                widget=OptLabel.textBuild(
-                    minw=400,
-                    minh=400,
-                    qss='background-color:skyblue',
-                    text="柱状图！"
-                ),
+                widget=DefaultDrawPageView('doc/bar.template.md'),
                 title="导航",
         ))
         self.mixinGallery = TabCanvas(defaultTabType=TabType(
@@ -81,7 +61,7 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
             pie_func=lambda: self.setStackIndex(4)
         )
 
-        self.menubar = MenuBar(p=self, s=self.GlobalSettings)
+        self.menubar = MenuBar(p=self, s=self.GlobalSettings, dy=lambda : DWidgetLoader()(self))
         self.statebar = StateVarious()
 
         self.trayicon = SystemTrayIcon(QIcon("logo.svg"), self)

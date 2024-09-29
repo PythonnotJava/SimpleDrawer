@@ -4,21 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c5fe7f70-2b94-45ef-9528-03d42f45b48b" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SimpleDrawer/ToolKit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SimpleDrawer/doc/插件设计.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+    <list default="true" id="fa60981f-dec7-4414-83b1-e52699f89682" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/SimpleDrawer/DWidgetExample.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SimpleDrawer/doc/bar.template.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SimpleDrawer/doc/line.template.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SimpleDrawer/doc/pie.template.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/SimpleDrawer.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SimpleDrawer.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimpleDrawer/AskDlg.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleDrawer/AskDlg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimpleDrawer/ChartWrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleDrawer/ChartWrapper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimpleDrawer/CanvasUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleDrawer/CanvasUI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimpleDrawer/DefaultCanvas.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleDrawer/DefaultCanvas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimpleDrawer/MenuBar.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleDrawer/MenuBar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimpleDrawer/SimpleDrawer.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleDrawer/SimpleDrawer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimpleDrawer/ToolKit.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleDrawer/ToolKit.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimpleDrawer/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleDrawer/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimpleDrawer/temp.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimpleDrawer/doc/scatter.template.md" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleDrawer/doc/scatter.template.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimpleDrawer/doc/插件设计.md" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleDrawer/doc/插件设计.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimpleDrawer/tt.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleDrawer/tt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template/pie.template.json" beforeDir="false" afterPath="$PROJECT_DIR$/template/pie.template.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,20 +41,21 @@
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "customColor": "",
-  "associatedIndex": 3
+  "associatedIndex": 6
 }]]></component>
-  <component name="ProjectId" id="2mesXTYeUTnPXHBaCbyRYV252UR" />
+  <component name="ProjectId" id="2mjWSnBcjqrJlalQBCNICQ4vLhk" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Python.ChartWrapper.executor": "Run",
+    "Python.DWidgetExample.executor": "Run",
     "Python.SimpleDrawer.executor": "Run",
+    "Python.ic.executor": "Run",
     "Python.tt.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -61,7 +66,7 @@
   }
 }]]></component>
   <component name="RunManager" selected="Python.SimpleDrawer">
-    <configuration name="ChartWrapper" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="DWidgetExample" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SimpleDrawer" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -75,7 +80,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SimpleDrawer/ChartWrapper.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SimpleDrawer/DWidgetExample.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -99,6 +104,29 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SimpleDrawer/SimpleDrawer.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ic" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SimpleDrawer" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/SimpleDrawer" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SimpleDrawer/ic.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -133,8 +161,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.SimpleDrawer" />
-        <item itemvalue="Python.ChartWrapper" />
         <item itemvalue="Python.tt" />
+        <item itemvalue="Python.ic" />
+        <item itemvalue="Python.DWidgetExample" />
       </list>
     </recent_temporary>
   </component>
@@ -149,12 +178,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
-      <changelist id="c5fe7f70-2b94-45ef-9528-03d42f45b48b" name="更改" comment="" />
-      <created>1727448417670</created>
+      <changelist id="fa60981f-dec7-4414-83b1-e52699f89682" name="更改" comment="" />
+      <created>1727590471197</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1727448417670</updated>
-      <workItem from="1727448419510" duration="1844000" />
+      <updated>1727590471197</updated>
+      <workItem from="1727590473800" duration="4030000" />
     </task>
     <servers />
   </component>
@@ -162,8 +191,9 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/SimpleDrawer$tt.coverage" NAME="tt 覆盖结果" MODIFIED="1727449498525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/SimpleDrawer" />
-    <SUITE FILE_PATH="coverage/SimpleDrawer$SimpleDrawer.coverage" NAME="SimpleDrawer 覆盖结果" MODIFIED="1727450164998" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/SimpleDrawer" />
-    <SUITE FILE_PATH="coverage/SimpleDrawer$ChartWrapper.coverage" NAME="ChartWrapper 覆盖结果" MODIFIED="1727450150409" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/SimpleDrawer" />
+    <SUITE FILE_PATH="coverage/SimpleDrawer$ic.coverage" NAME="ic 覆盖结果" MODIFIED="1727591665957" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/SimpleDrawer" />
+    <SUITE FILE_PATH="coverage/SimpleDrawer$tt.coverage" NAME="tt 覆盖结果" MODIFIED="1727593630352" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/SimpleDrawer" />
+    <SUITE FILE_PATH="coverage/SimpleDrawer$SimpleDrawer.coverage" NAME="SimpleDrawer 覆盖结果" MODIFIED="1727594482289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/SimpleDrawer" />
+    <SUITE FILE_PATH="coverage/SimpleDrawer$DWidgetExample.coverage" NAME="DWidgetExample 覆盖结果" MODIFIED="1727590832108" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/SimpleDrawer" />
   </component>
 </project>

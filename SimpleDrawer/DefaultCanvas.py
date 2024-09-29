@@ -40,3 +40,23 @@ class HomePageView(QLabel):
         self.setOpenExternalLinks(True)
         self.setWordWrap(True)
         self.setAlignment(Qt.AlignCenter)
+
+    def resizeEvent(self, event):
+        # 获取窗口的宽度和高度
+        width = self.width()
+        height = self.height()
+
+        # 计算字体大小
+        font_size = min(width, height) // 20
+        self.setStyleSheet(f"font-size: {font_size}px;")
+
+class DefaultDrawPageView(QTextEdit):
+    def __init__(self, path : PathLike | str):
+        super().__init__()
+
+        self.setBaseSize(400, 400)
+        self.setMarkdown(open(path, 'r', encoding='U8').read())
+        self.setReadOnly(True)
+
+    def contextMenuEvent(self, *args):
+        pass

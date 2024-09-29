@@ -12,15 +12,15 @@ from qtawesome import icon as qt_icon
 from qt_material import apply_stylesheet, list_themes
 
 class MenuBar(QMenuBar):
-    def __init__(self, p=None, s=None, **kwargs):
+    def __init__(self, p=None, s=None, dy : Callable = lambda : ..., **kwargs):
         super().__init__(**kwargs)
 
         self.settingmenu = QMenu('设置', self)
         self.pluginmenu = QMenu('插件', self)
 
         self.defaultMainTheme = None
-        self.__setUI(p, s)
-    def __setUI(self, p, s) -> None:
+        self.__setUI(p, s, dy)
+    def __setUI(self, p, s, dy) -> None:
         toggleMainThemeAct = QAction("切换全局主题", self.settingmenu)
         toggleMainThemeMenu = QMenu()
         toggleMainThemeAct.setMenu(toggleMainThemeMenu)
@@ -35,6 +35,10 @@ class MenuBar(QMenuBar):
             act = QAction(theme, toggleMainThemeMenu)
             act.triggered.connect(lambda _, t=theme: self.__toggleMainTheme(p, t))
             toggleMainThemeMenu.addAction(act)
+
+        dynamicLoaderAct = QAction('动态载入', self.pluginmenu)
+        dynamicLoaderAct.triggered.connect(dy)
+        self.pluginmenu.addAction(dynamicLoaderAct)
 
     @staticmethod
     def __exitAskAct(s, exitAskAct : QAction):
