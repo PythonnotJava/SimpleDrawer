@@ -1,0 +1,22 @@
+{
+  "class" : "line",
+  "title" : "折线图名字",
+  "theme" : 2,
+  "polar" : true,
+  "type" : [0, 1],
+  "color" : ["red", "blue"],
+  "categories" : ["A Type", "B Type"],
+  "lw" : [10, 5],
+  "xs" : [
+    [1, 2, 3, 4.5],
+    [0.5, 1.5, 2.5, 3.5, 4.5]
+  ],
+  "ys" : [
+    [3, 4, 5, 10],
+    [1, 3, 7, 3, 0, 6]
+  ],
+  "xrange" : [-5, 10],
+  "yrange" : [-2, 10],
+  "xlabel" : "标签1",
+  "ylabel" : "标签2"
+}

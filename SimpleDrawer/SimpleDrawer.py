@@ -116,6 +116,26 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
         if widget != stack.currentWidget():
             stack.setCurrentWidget(widget)
 
+    def __loadFile(self, Gallery, wrapper, Widget, fileName) -> None:
+        try:
+            Gallery.append(TabType(
+                widget=Widget(wrapper=wrapper),
+                title=wrapper.get('title')
+            ))
+            self.statebar.showMessage("绘图成功！", 2500)
+        except Exception as e:
+            w = AbstractWidget()
+            w.setUniqueWidget(
+                widget=OptLabel.textBuild(text=e.__str__(), textWrap=True),
+                contentMargins=[0, 0, 0, 0]
+            )
+            Gallery.append(TabType(
+                widget=w,
+                title=str(type(e))
+            ))
+            self.statebar.showMessage("绘图失败！", 2500)
+        Gallery.setCurrentPath(fileName)
+
     def absract_draw(self, what_to_do : str, PlotWrapper, Widget, Gallery : TabCanvas):
         fileName, _ = QFileDialog.getOpenFileName(
             self,
@@ -124,26 +144,7 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
             "模板(*.json)"
         )
         if fileName:
-            try:
-                wrapper = PlotWrapper(fileName).data
-                print(wrapper)
-                Gallery.append(TabType(
-                    widget=Widget(wrapper=wrapper),
-                    title=wrapper.get('title')
-                ))
-                self.statebar.showMessage("绘图成功！", 2500)
-            except Exception as e:
-                w = AbstractWidget()
-                w.setUniqueWidget(
-                    widget=OptLabel.textBuild(text=e.__str__(), textWrap=True),
-                    contentMargins=[0, 0, 0, 0]
-                )
-                Gallery.append(TabType(
-                    widget=w,
-                    title=str(type(e))
-                ))
-                self.statebar.showMessage("绘图失败！", 2500)
-            Gallery.setCurrentPath(fileName)
+            self.__loadFile(Gallery, PlotWrapper(fileName).data, Widget, fileName)
         else:
             Gallery.setCurrentPath("Lost FilePath!")
             self.statebar.showMessage("取消选择！", 2500)
@@ -179,8 +180,31 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
             dlg.close()
 
     # 支持拖入画图
-    def dropEvent(self, e : QDropEvent) -> None:
-        ...
+    def dragEnterEvent(self, e: QDragEnterEvent, *args):
+        if e.mimeData() is not None and e.mimeData().hasUrls():
+            e.acceptProposedAction()
+
+    def dropEvent(self, e: QDropEvent, *args):
+        if e.mimeData().hasUrls():
+            url = e.mimeData().urls()[0]
+            filePath = url.toLocalFile()
+            try:
+                wrapper = json.load(open(filePath, 'r', encoding='u8'))
+                drawType = wrapper['class'].lower()
+                match drawType:
+                    case 'scatter':
+                        self.__loadFile(self.scaGallery, wrapper, ValueAxisSeriesView, filePath)
+                        self.setStackWidget(self.scaGallery)
+                    case 'line':
+                        self.__loadFile(self.lineGallery, wrapper, ValueAxisSeriesView, filePath)
+                    case 'bar':
+                        self.__loadFile(self.barGallery, wrapper, BarSeriesView, filePath)
+                    case 'pie':
+                        self.__loadFile(self.pieGallery, wrapper, PieSeriesView, filePath)
+                    case _:
+                        self.statebar.showMessage('不支持类型的图列', 2500)
+            except:
+                self.statebar.showMessage('未知类型的图列', 2500)
 
     # 核心外置接口函数
     #############################################################################################
