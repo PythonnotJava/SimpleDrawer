@@ -1,32 +1,35 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
-from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel
 
-class MainWindow(QWidget):
+class MyApp(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.label = QLabel("这是一个写满文字的主页！", self)
-        self.label.setAlignment(Qt.AlignCenter)
+        self.setWindowTitle('Button Check Example')
 
         layout = QVBoxLayout()
+
+        self.label = QLabel('按钮未被按下', self)
         layout.addWidget(self.label)
+
+        self.button = QPushButton('按下我', self)
+        self.button.setCheckable(True)  # 设置为可切换状态
+        layout.addWidget(self.button)
+
+        # 连接按钮的点击信号到槽函数
+        self.button.clicked.connect(self.on_button_click)
+
         self.setLayout(layout)
 
-        # 初始窗口大小
-        self.resize(800, 600)
-
-    def resizeEvent(self, event):
-        # 获取窗口的宽度和高度
-        width = self.width()
-        height = self.height()
-
-        # 计算字体大小
-        font_size = min(width, height) // 20  # 你可以调整这个比例
-        self.label.setStyleSheet(f"font-size: {font_size}px;")
+    def on_button_click(self):
+        # 使用 setChecked 方法
+        if self.button.isChecked():
+            self.label.setText('按钮已被按下')
+        else:
+            self.label.setText('按钮未被按下')
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = MyApp()
     window.show()
     sys.exit(app.exec_())

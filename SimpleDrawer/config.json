@@ -3,7 +3,7 @@
     "hints": 0,
     "animationDuration": 1000,
     "animationOptions": 1,
-    "defaultMainTheme": "light_blue_500.xml",
+    "defaultMainTheme": "dark_medical.xml",
     "exit-ask": false,
     "shortcuts": {
         "mini": "Ctrl+H"

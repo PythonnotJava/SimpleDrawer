@@ -23,7 +23,7 @@ from ToolKit import *
 WHATTHIS = "Find Simple tools in Drawer."
 
 class SimpleDrawer(QMainWindow, AbstractWidget):
-    GlobalSettings = json.load(open('config.json'))
+    GlobalSettings = json.load(open('config.json', 'r', encoding='u8'))
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -116,8 +116,13 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
         if widget != stack.currentWidget():
             stack.setCurrentWidget(widget)
 
-    def __loadFile(self, Gallery, wrapper, Widget, fileName) -> None:
+    def __loadFile(
+            self,
+            Gallery : TabCanvas,
+            PlotWrapper,
+            Widget, fileName) -> None:
         try:
+            wrapper = PlotWrapper(path=fileName).data
             Gallery.append(TabType(
                 widget=Widget(wrapper=wrapper),
                 title=wrapper.get('title')
@@ -144,7 +149,7 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
             "模板(*.json)"
         )
         if fileName:
-            self.__loadFile(Gallery, PlotWrapper(fileName).data, Widget, fileName)
+            self.__loadFile(Gallery, PlotWrapper, Widget, fileName)
         else:
             Gallery.setCurrentPath("Lost FilePath!")
             self.statebar.showMessage("取消选择！", 2500)
@@ -193,14 +198,17 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
                 drawType = wrapper['class'].lower()
                 match drawType:
                     case 'scatter':
-                        self.__loadFile(self.scaGallery, wrapper, ValueAxisSeriesView, filePath)
-                        self.setStackWidget(self.scaGallery)
+                        self.__loadFile(self.scaGallery, ScatterWrapper, ValueAxisSeriesView, filePath)
+                        self.sidebar.pressStateByObejctName('散点图')
                     case 'line':
-                        self.__loadFile(self.lineGallery, wrapper, ValueAxisSeriesView, filePath)
+                        self.__loadFile(self.lineGallery, LineCurveWrapper, ValueAxisSeriesView, filePath)
+                        self.sidebar.pressStateByObejctName('线性图')
                     case 'bar':
-                        self.__loadFile(self.barGallery, wrapper, BarSeriesView, filePath)
+                        self.__loadFile(self.barGallery, BarWrapper, BarSeriesView, filePath)
+                        self.sidebar.pressStateByObejctName('柱状图')
                     case 'pie':
-                        self.__loadFile(self.pieGallery, wrapper, PieSeriesView, filePath)
+                        self.__loadFile(self.pieGallery, PieWrapper, PieSeriesView, filePath)
+                        self.sidebar.pressStateByObejctName('饼状图')
                     case _:
                         self.statebar.showMessage('不支持类型的图列', 2500)
             except:

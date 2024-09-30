@@ -91,12 +91,12 @@ class OptPushButton(QPushButton, AbstractWidget):
                  icon : Union[str, QIcon, None] = None,
                  cFunction : Callable = lambda : ...,
                  shortcuts : Union[str, QKeySequence, None] = None,
+                 enabled : bool = True,
                  **kwargs
                  ):
         super().__init__(**kwargs)
-
+        self.setEnabled(enabled)
         self.clicked.connect(cFunction)
-
         if shortcuts:
             self.setShortcut(shortcuts)
 

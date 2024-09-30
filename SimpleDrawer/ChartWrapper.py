@@ -31,172 +31,176 @@ def translatePoints(src : dict) -> Union[List[QPointF], List[List[QPointF]]]:
             get.append(QPointF(value, ys[index]))
     return get
 
-class ScatterWrapper:
-    def __init__(self, path : Union[PathLike, str]):
-        settings = json.load(open(path, 'r', encoding='utf-8'))
-        shape = settings['shape']
+class WrapperMixin:
+    def __init__(self, path: Union[PathLike, str]):
+        self.settings = json.load(open(path, 'r', encoding='utf-8'))
+
+class ScatterWrapper(WrapperMixin):
+    def __init__(self, path):
+        super().__init__(path)
+        shape = self.settings['shape']
         if isinstance(shape, str):
             self.__data = dict(
-                title=settings.get('title', 'Unknow'),
+                title=self.settings.get('title', 'Unknow'),
                 series=ScatterSeries(
                     markerShape=ShapeMap[shape],
-                    markerSize=settings.get('size', 10.),
-                    points=translatePoints(settings),
-                    color=settings['color'],
-                    name=settings['categories'],
+                    markerSize=self.settings.get('size', 10.),
+                    points=translatePoints(self.settings),
+                    color=self.settings['color'],
+                    name=self.settings['categories'],
                 ),
                 mult=False,
-                theme=ChartThemeMap[settings.get('theme', 0)],
-                xrange=settings.get('xrange', None),
-                yrange = settings.get('yrange', None),
-                polar=settings.get('polar', False),
-                xlabel=settings.get('xlabel', None),
-                ylabel=settings.get('ylabel', None)
+                theme=ChartThemeMap[self.settings.get('theme', 0)],
+                xrange=self.settings.get('xrange', None),
+                yrange = self.settings.get('yrange', None),
+                polar=self.settings.get('polar', False),
+                xlabel=self.settings.get('xlabel', None),
+                ylabel=self.settings.get('ylabel', None)
             )
         else:
             scaseries = []
-            ps : List[List[QPointF]] = translatePoints(settings)
+            ps : List[List[QPointF]] = translatePoints(self.settings)
             for i, s in enumerate(shape):
                 scaseries.append(ScatterSeries(
                     markerShape=ShapeMap[s],
-                    markerSize=settings['size'][i],
+                    markerSize=self.settings['size'][i],
                     points=ps[i],
-                    color=settings['color'][i],
-                    name=settings['categories'][i]
+                    color=self.settings['color'][i],
+                    name=self.settings['categories'][i]
                 ))
             self.__data = dict(
-                title=settings.get('title', 'Unknow'),
+                title=self.settings.get('title', 'Unknow'),
                 series=scaseries,
                 mult=True,
-                theme=ChartThemeMap[settings.get('theme', 0)],
-                xrange=settings.get('xrange', None),
-                yrange=settings.get('yrange', None),
-                polar=settings.get('polar', False),
-                xlabel=settings.get('xlabel', None),
-                ylabel=settings.get('ylabel', None)
+                theme=ChartThemeMap[self.settings.get('theme', 0)],
+                xrange=self.settings.get('xrange', None),
+                yrange=self.settings.get('yrange', None),
+                polar=self.settings.get('polar', False),
+                xlabel=self.settings.get('xlabel', None),
+                ylabel=self.settings.get('ylabel', None)
             )
     @property
     def data(self) -> dict: return self.__data
 
-class LineCurveWrapper:
-    def __init__(self, path: Union[PathLike, str]):
-        settings = json.load(open(path, 'r', encoding='utf-8'))
-        color = settings['color']
+class LineCurveWrapper(WrapperMixin):
+    def __init__(self, path):
+        super().__init__(path)
+        color = self.settings['color']
         if isinstance(color, str):
             self.__data = dict(
-                title=settings.get('title', 'Unknow'),
+                title=self.settings.get('title', 'Unknow'),
                 series=LineSeries(
-                    points=translatePoints(settings),
-                    color=settings['color'],
-                    name=settings['categories'],
-                    lw=settings['lw']
-                ) if settings.get('type', 0) == 0
+                    points=translatePoints(self.settings),
+                    color=self.settings['color'],
+                    name=self.settings['categories'],
+                    lw=self.settings['lw']
+                ) if self.settings.get('type', 0) == 0
                 else LineSeries(
-                    points=translatePoints(settings),
-                    color=settings['color'],
-                    name=settings['categories'],
-                    lw=settings['lw']
+                    points=translatePoints(self.settings),
+                    color=self.settings['color'],
+                    name=self.settings['categories'],
+                    lw=self.settings['lw']
                 ),
                 mult=False,
-                theme=ChartThemeMap[settings.get('theme', 0)],
-                xrange=settings.get('xrange', None),
-                yrange=settings.get('yrange', None),
-                polar=settings.get('polar', False),
-                xlabel=settings.get('xlabel', None),
-                ylabel=settings.get('ylabel', None)
+                theme=ChartThemeMap[self.settings.get('theme', 0)],
+                xrange=self.settings.get('xrange', None),
+                yrange=self.settings.get('yrange', None),
+                polar=self.settings.get('polar', False),
+                xlabel=self.settings.get('xlabel', None),
+                ylabel=self.settings.get('ylabel', None)
             )
         else:
             scaseries = []
-            ps: List[List[QPointF]] = translatePoints(settings)
+            ps: List[List[QPointF]] = translatePoints(self.settings)
             types = {
                 0 : LineSeries,
                 1 : CurveSeries
             }
             for i, s in enumerate(color):
-                scaseries.append(types.get(settings['type'][i], 0)(
+                scaseries.append(types.get(self.settings['type'][i], 0)(
                     points=ps[i],
-                    color=settings['color'][i],
-                    name=settings['categories'][i],
-                    lw=settings['lw'][i]
+                    color=self.settings['color'][i],
+                    name=self.settings['categories'][i],
+                    lw=self.settings['lw'][i]
                 ))
             self.__data = dict(
-                title=settings.get('title', 'Unknow'),
+                title=self.settings.get('title', 'Unknow'),
                 series=scaseries,
                 mult=True,
-                theme=ChartThemeMap[settings.get('theme', 0)],
-                xrange=settings.get('xrange', None),
-                yrange=settings.get('yrange', None),
-                polar=settings.get('polar', False),
-                xlabel=settings.get('xlabel', None),
-                ylabel=settings.get('ylabel', None)
+                theme=ChartThemeMap[self.settings.get('theme', 0)],
+                xrange=self.settings.get('xrange', None),
+                yrange=self.settings.get('yrange', None),
+                polar=self.settings.get('polar', False),
+                xlabel=self.settings.get('xlabel', None),
+                ylabel=self.settings.get('ylabel', None)
             )
 
     @property
     def data(self) -> dict:
         return self.__data
 
-class BarWrapper:
-    def __init__(self, path: Union[PathLike, str]):
-        settings = json.load(open(path, 'r', encoding='utf-8'))
-        color = settings['color']
-        k = settings.get('type', 0)
+class BarWrapper(WrapperMixin):
+    def __init__(self, path):
+        super().__init__(path)
+        color = self.settings['color']
+        k = self.settings.get('type', 0)
         series = BarSeriesMap.get(k, QBarSeries)()
-        series.setBarWidth(settings.get('bw', 0.5))
-        isDefaultColor = settings.get('default-color', False)
-        series.setLabelsVisible(settings.get('value-visible', True))
+        series.setBarWidth(self.settings.get('bw', 0.5))
+        isDefaultColor = self.settings.get('default-color', False)
+        series.setLabelsVisible(self.settings.get('value-visible', True))
         if isinstance(color, str):
-            barSets = QBarSet(settings.get('categories', 'Unknow'))
-            barSets.append(settings['datas'])
+            barSets = QBarSet(self.settings.get('categories', 'Unknow'))
+            barSets.append(self.settings['datas'])
             if not isDefaultColor:
-                barSets.setColor(QColor(settings.get('color', 'black')))
+                barSets.setColor(QColor(self.settings.get('color', 'black')))
             series.append(barSets)
             self.__data = dict(
-                title=settings.get('title', 'Unknow'),
-                theme=ChartThemeMap[settings.get('theme', 0)],
+                title=self.settings.get('title', 'Unknow'),
+                theme=ChartThemeMap[self.settings.get('theme', 0)],
                 mult=False,
-                rorate=int(settings.get('rorate', 0)),
-                labels=settings['labels'],
+                rorate=int(self.settings.get('rorate', 0)),
+                labels=self.settings['labels'],
                 series=series,
                 ishor=k >= 3,
-                xlabel=settings.get('xlabel', None),
-                ylabel=settings.get('ylabel', None)
+                xlabel=self.settings.get('xlabel', None),
+                ylabel=self.settings.get('ylabel', None)
             )
         else:
             for index, c in enumerate(color):
-                barSet = QBarSet(settings.get('categories')[index])
-                barSet.append(settings['datas'][index])
+                barSet = QBarSet(self.settings.get('categories')[index])
+                barSet.append(self.settings['datas'][index])
                 if not isDefaultColor:
-                    barSet.setColor(QColor(settings.get('color')[index]))
+                    barSet.setColor(QColor(self.settings.get('color')[index]))
                 series.append(barSet)
             self.__data = dict(
-                title=settings.get('title', 'Unknow'),
-                theme=ChartThemeMap[settings.get('theme', 0)],
+                title=self.settings.get('title', 'Unknow'),
+                theme=ChartThemeMap[self.settings.get('theme', 0)],
                 mult=False,  # Bar只能有一个
                 series=series,
-                rorate=int(settings.get('rorate', 0)),
-                labels=settings['labels'],
+                rorate=int(self.settings.get('rorate', 0)),
+                labels=self.settings['labels'],
                 ishor=k >= 3,
-                xlabel=settings.get('xlabel', None),
-                ylabel=settings.get('ylabel', None)
+                xlabel=self.settings.get('xlabel', None),
+                ylabel=self.settings.get('ylabel', None)
             )
 
     @property
     def data(self) -> dict: return self.__data
 
-class PieWrapper:
-    def __init__(self, path : Union[PathLike, str]):
-        settings = json.load(open(path, 'r', encoding='utf-8'))
-        isDatasVisible = settings.get('datas-visible', True)
-        isUsePercentage = settings.get('use-percentage', True)
-        ft = settings.get('format', 0)
-        names = settings['categories']
+class PieWrapper(WrapperMixin):
+    def __init__(self, path):
+        super().__init__(path)
+        isDatasVisible = self.settings.get('datas-visible', True)
+        isUsePercentage = self.settings.get('use-percentage', True)
+        ft = self.settings.get('format', 0)
+        names = self.settings['categories']
         series = PieSeries(
-            labelsVisible=settings.get('label-visible', True),
-            hole=settings.get('hole', 0),
+            labelsVisible=self.settings.get('label-visible', True),
+            hole=self.settings.get('hole', 0),
             names=names,
-            datas=settings['datas'],
-            isDefaultColor=settings.get('default-color', False),
-            colors=settings['color']
+            datas=self.settings['datas'],
+            isDefaultColor=self.settings.get('default-color', False),
+            colors=self.settings['color']
         )
 
         if isDatasVisible and isUsePercentage:  # 数据可见并且采用百分比模式
@@ -209,8 +213,8 @@ class PieWrapper:
             pass
 
         self.__data = dict(
-            title=settings.get('title', 'Unknow'),
-            theme=ChartThemeMap[settings.get('theme', 0)],
+            title=self.settings.get('title', 'Unknow'),
+            theme=ChartThemeMap[self.settings.get('theme', 0)],
             mult=False,
             series=series,
             isLegendVisible=True,
@@ -348,9 +352,4 @@ class PieSeriesView(ChartContainerMixin):
             mk.setLabel(self.wrapper['names'][index])
 
 if __name__ == '__main__':
-    # print(PieWrapper("../template/pie.template.json").data)
-    app = QApplication([])
-    ui = QMainWindow()
-    ui.setCentralWidget(PieSeriesView(wrapper=PieWrapper("../template/pie.template.json").data))
-    ui.show()
-    app.exec()
+    print(ScatterWrapper("../template/scatter.template.json").data)
