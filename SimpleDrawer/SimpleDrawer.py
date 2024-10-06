@@ -199,16 +199,16 @@ class SimpleDrawer(QMainWindow, AbstractWidget):
                 match drawType:
                     case 'scatter':
                         self.__loadFile(self.scaGallery, ScatterWrapper, ValueAxisSeriesView, filePath)
-                        self.sidebar.pressStateByObejctName('散点图')
+                        self.setStackWidget(self.scaGallery)
                     case 'line':
                         self.__loadFile(self.lineGallery, LineCurveWrapper, ValueAxisSeriesView, filePath)
-                        self.sidebar.pressStateByObejctName('线性图')
+                        self.setStackWidget(self.lineGallery)
                     case 'bar':
                         self.__loadFile(self.barGallery, BarWrapper, BarSeriesView, filePath)
-                        self.sidebar.pressStateByObejctName('柱状图')
+                        self.setStackWidget(self.barGallery)
                     case 'pie':
                         self.__loadFile(self.pieGallery, PieWrapper, PieSeriesView, filePath)
-                        self.sidebar.pressStateByObejctName('饼状图')
+                        self.setStackWidget(self.pieGallery)
                     case _:
                         self.statebar.showMessage('不支持类型的图列', 2500)
             except:
